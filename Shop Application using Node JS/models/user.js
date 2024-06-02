@@ -57,7 +57,7 @@ class user{
                 };
             });
         })
-        .catch(err => comsole.log(err));
+        .catch(err => console.log(err));
     }
 
     deleteCartItem(productID){
@@ -67,6 +67,32 @@ class user{
 
         const dB = getDb();
         return dB.collection("users").updateOne({_id: new mongodb.ObjectId(this._id)}, {$set: {cart: {items: cartItems}}});
+    }
+
+    addOrder(){
+        const dB = getDb();
+        return this.getCart()
+        .then(products => {
+            const order = {
+                items: products,
+                user: {
+                    _id: new mongodb.ObjectId(this._id),
+                    email: this.email
+                }
+            };
+
+            return dB.collection("orders").insertOne(order)
+        })
+        .then(() => {
+            this.cart = {items: []}
+            return dB.collection("users").updateOne({_id: new mongodb.ObjectId(this._id)}, {$set: {cart: {items: []}}});
+        })
+        .catch(err => comsole.log(err));;
+    }
+
+    getOrders(){
+        const dB = getDb();
+        return dB.collection("orders").find({"user._id": new mongodb.ObjectId(this._id)}).toArray();
     }
 
     static getUserById(id){

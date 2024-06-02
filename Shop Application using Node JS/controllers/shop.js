@@ -1,5 +1,4 @@
 const productModel = require("../models/product.js");
-// const cartModel = require("../models/cart.js");
 
 exports.getIndex = (req, res, next) => {
     productModel.getAllProducts()
@@ -44,7 +43,6 @@ exports.getProduct = (req, res, next) => {
 exports.getCart = (req, res, next) => {
     req.user.getCart()
     .then(products => {
-        console.log(products);
         res.render("../views/shop/cart.ejs", {
             pageTitle: "Cart",
             path: "/cart",
@@ -60,32 +58,10 @@ exports.postCart = (req, res, next) => {
     .then( product => {
         return req.user.addToCart(product);
     })
-    .then( () => res.redirect('/cart'))
+    .then( () => {
+        res.redirect('/cart');
+    })
     .catch( err => console.log(err));
-
-    // let newCart;
-    // let quantity = 1;
-    // req.user.getCart()
-    // .then(cart => {
-    //     newCart = cart;
-    //     return cart.getProducts({where: {id: produdctID}});
-    // })
-    // .then(products => {
-    //     let product = products[0];
-    //     if(product){
-    //         const oldQuantity = product.cartItem.quantity;
-    //         quantity = oldQuantity + 1;
-    //         return product;
-    //     }
-    //     return productModel.findByPk(produdctID);
-    // })
-    // .then(product => {
-    //     return newCart.addProduct(product, {through: {quantity: quantity}});
-    // })
-    // .then(() => {
-    //     res.redirect("/cart");
-    // })
-    // .catch(err => console.log(err));
 };
 
 exports.postCartDeleteProduct = (req, res, next) => {
@@ -97,16 +73,29 @@ exports.postCartDeleteProduct = (req, res, next) => {
     .catch(err => console.log(err));
 };
 
-// exports.getOrder = (req, res, next) => {
-//     res.render("../views/shop/orders.ejs", {
-//         pageTitle: "Ur Order",
-//         path: "/orders"
-//     });
-// };
+exports.postOrder = (req, res, next) => {
+    req.user.addOrder()
+    .then( () => {
+        res.redirect('/orders');
+    })
+    .catch( err => console.log(err));
+};
 
-// exports.getCheckout = (req, res, next) => {
-//     res.render("../views/shop/checkout.ejs", {
-//         pageTitle: "Checkout",
-//         path: "/checkout"
-//     });
-// };
+exports.getOrder = (req, res, next) => {
+    req.user.getOrders()
+    .then((orders) => {
+        res.render("../views/shop/orders.ejs", {
+            pageTitle: "Ur Order",
+            path: "/orders",
+            orders: orders
+        });
+    })
+    .catch( err => console.log(err));
+};
+
+exports.getCheckout = (req, res, next) => {
+    res.render("../views/shop/checkout.ejs", {
+        pageTitle: "Checkout",
+        path: "/checkout"
+    });
+};
