@@ -1,9 +1,9 @@
-const path = require("path");
 const express = require("express");
+const path = require("path");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 
 const controller404 = require("./controllers/404.js");
-const mongoConnect = require("./utils/database.js").mongoConnect;
 const userModel = require("./models/user.js");
 
 const app = express();
@@ -11,9 +11,9 @@ app.set("view engine", "ejs");
 app.set("views", "views");
 
 app.use((req, res, next) => {
-    userModel.getUserById("6655fd8c1489454811fff383")
+    userModel.findById("665eed0c28cefc172bcca0da")
     .then(user => {
-        req.user = new userModel(user.email, user.userName, user.cart, user._id);
+        req.user = user;
         next();
     })
     .catch(err => console.log(err));
@@ -29,6 +29,24 @@ app.use("/admin", adminRoutes.Router);
 app.use(shopRoutes);
 app.use(controller404.get404);
 
-mongoConnect(() => {
+mongoose.connect("mongodb+srv://zizo:abdelaziz@cluster0.0cachr7.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+.then(() => {
+    return userModel.findOne();
+})
+.then(user => {
+    if(!user){
+        const user = new userModel({
+            name: "zizo",
+            email: "zizo@test.com",
+            cart: {
+                items: [],
+                totalPrice: 0
+            }
+        })
+        return user.save();
+    }
+})
+.then(() => {
     app.listen(2500);
-});
+})
+.catch(err => console.log(err));
