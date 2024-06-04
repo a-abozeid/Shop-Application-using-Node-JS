@@ -17,7 +17,8 @@
 }
 
 .cart__item h1,
-.cart__item h2 {
+.cart__item h2,
+.cart__item p {
   margin-right: 1rem;
   font-size: 1.2rem;
   margin: 0;
