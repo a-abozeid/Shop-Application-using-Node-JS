@@ -12,7 +12,6 @@ const postCart = shopController.postCart;
 const postCartDeleteProduct = shopController.postCartDeleteProduct;
 const postOrder = shopController.postOrder;
 const getOrder = shopController.getOrder;
-const getCheckout = shopController.getCheckout;
 
 router.get('/', getIndex);
 router.get('/products', getProducts);
@@ -22,6 +21,5 @@ router.post('/cart', postCart);
 router.post('/cart-delete-item', postCartDeleteProduct);
 router.post('/create-order', postOrder);
 router.get('/orders', getOrder);
-router.get('/checkout', getCheckout);
 
 module.exports = router;
