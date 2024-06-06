@@ -4,7 +4,7 @@ exports.getAddProduct = (req, res, next) => {
     res.render("../views/admin/add-product.ejs", {
         pageTitle: "Add Product",
         path: "/admin/add-product",
-        edit: false
+        edit: false,
     });
 };
 
@@ -37,7 +37,7 @@ exports.getEditProduct = (req, res, next) => {
             pageTitle: "Edit Product",
             path: "/admin/products",
             product: product,
-            edit: true
+            edit: true,
         });
     }).catch(err => {
         console.log(err);
@@ -83,7 +83,7 @@ exports.getProducts = (req, res, next) => {
         res.render("../views/admin/products", {
             pageTitle: "Admin-products",
             prods: products,
-            path: '/admin/products'
+            path: '/admin/products',
         })
     }).catch(err => {
         console.log(err);

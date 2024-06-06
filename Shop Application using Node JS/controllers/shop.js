@@ -7,7 +7,7 @@ exports.getIndex = (req, res, next) => {
         res.render("../views/shop/index", {
             pageTitle: "Shop",
             prods: products,
-            path: '/'
+            path: '/',
         })
     }).catch(err => {
         console.log(err);
@@ -20,7 +20,7 @@ exports.getProducts = (req, res, next) => {
         res.render("../views/shop/product-list", {
             pageTitle: "Shop",
             prods: products,
-            path: '/products'
+            path: '/products',
         })
     }).catch(err => {
         console.log(err);
@@ -34,7 +34,7 @@ exports.getProduct = (req, res, next) => {
         res.render("../views/shop/product-detail.ejs", {
             product: product,
             pageTitle: product.title,
-            path: "/products"
+            path: "/products",
         });
     }).catch(err => {
         console.log(err);
@@ -50,7 +50,7 @@ exports.getCart = (req, res, next) => {
             pageTitle: "Cart",
             path: "/cart",
             products: products,
-            total: totalPrice
+            total: totalPrice,
         });
     })
     .catch(err => console.log(err));
@@ -90,7 +90,7 @@ exports.postOrder = (req, res, next) => {
         const order = new orderModel({
             products: products,
             user: {
-                userName: req.user.name,
+                email: req.user.email,
                 userID: req.user._id
             },
             totalPrice: req.user.cart.totalPrice
@@ -113,7 +113,7 @@ exports.getOrder = (req, res, next) => {
         res.render("../views/shop/orders.ejs", {
             pageTitle: "Ur Order",
             path: "/orders",
-            orders: orders
+            orders: orders,
         });
     })
     .catch( err => console.log(err));
